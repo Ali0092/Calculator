@@ -112,9 +112,8 @@ class MainActivity : AppCompatActivity() {
             binding.resultTxt.text = SetText(data, '9')
         }
         binding.dotBtn.setOnClickListener {
-            // val data=binding.resultTxt.text.toString()
-            //   binding.resultTxt.setText(SetText(data,'.'))
-            Toast.makeText(applicationContext, "Not Implemented yet.", Toast.LENGTH_LONG).show()
+             val data=binding.resultTxt.text.toString()
+             binding.resultTxt.setText(SetText(data,'.'))
         }
 
     }
