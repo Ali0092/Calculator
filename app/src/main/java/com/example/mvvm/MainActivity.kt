@@ -3,6 +3,8 @@ package com.example.mvvm
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.mvvm.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,35 +18,39 @@ class MainActivity : AppCompatActivity() {
         title = "CALCULATOR"
         setContentView(binding.root)
 
+
+        val viewModel=ViewModelProvider(this)[CalculatorViewModel::class.java]
+
         //Buttons for Operations..
+
         binding.addBtn.setOnClickListener {
             val data = binding.resultTxt.text.toString()
-            if (firstLetterCheck(data)) {
-                if (checkingOp(data)) {
+            if (viewModel.firstLetterCheck(data)) {
+                if (viewModel.checkingOp(data)) {
                     binding.resultTxt.text = SetText(data, '+')
                 } else binding.resultTxt.text = data
             }
         }
         binding.minusBtn.setOnClickListener {
             val data = binding.resultTxt.text.toString()
-            if (firstLetterCheck(data)) {
-                if (checkingOp(data)) {
+            if (viewModel.firstLetterCheck(data)) {
+                if (viewModel.checkingOp(data)) {
                     binding.resultTxt.text = SetText(data, '-')
                 } else binding.resultTxt.text = data
             }
         }
         binding.divBtn.setOnClickListener {
             val data = binding.resultTxt.text.toString()
-            if (firstLetterCheck(data)) {
-                if (checkingOp(data)) {
+            if (viewModel.firstLetterCheck(data)) {
+                if (viewModel.checkingOp(data)) {
                     binding.resultTxt.text = SetText(data, '/')
                 } else binding.resultTxt.text = data
             }
         }
         binding.multiplyBtn.setOnClickListener {
             val data = binding.resultTxt.text.toString()
-            if (firstLetterCheck(data)) {
-                if (checkingOp(data)) {
+            if (viewModel.firstLetterCheck(data)) {
+                if (viewModel.checkingOp(data)) {
                     binding.resultTxt.text = SetText(data, '*')
                 } else binding.resultTxt.text = data
             }
@@ -55,10 +61,10 @@ class MainActivity : AppCompatActivity() {
             val data = binding.resultTxt.text.toString()
             //Calculation Logic...
             val temp = data.split("+", "-", "*", "/")
-            if(firstLetterCheck(data)) {
+            if(viewModel.firstLetterCheck(data)) {
                 if (temp.size > 1) {
-                    if (!(data.isNullOrEmpty()) && checkingOp(data) == true) {
-                        binding.resultTxt.text = calculation(data)
+                    if (!(data.isNullOrEmpty()) && viewModel.checkingOp(data) == true) {
+                        binding.resultTxt.text = viewModel.calculation(data)
                         binding.inputTxt.text = data
                     }
                 }
@@ -113,49 +119,13 @@ class MainActivity : AppCompatActivity() {
         }
         binding.dotBtn.setOnClickListener {
              val data=binding.resultTxt.text.toString()
-             binding.resultTxt.setText(SetText(data,'.'))
+            binding.resultTxt.setText(SetText(data,'.'))
         }
 
     }
 
     //Calculations....
 
-    private fun calculation(data: String): String {
-        val operator = data.filterNot { x -> x.isDigit() }
-        val operands = data.split("+", "-", "*", "/")
-        val arr = operands.map { it.toFloat() }.toTypedArray()
-        var res = arr[0].toFloat()
-        val err = "NotDefined"
-        var count = 1
-        //Make it more efficient till 5 digits..
-        for (op in operator) {
-            when (op) {
-                '+' -> res += arr[count++]
-                '-' -> res -= arr[count++]
-                '*' -> res *= arr[count++]
-                '/' -> {
-                    if (arr[count] != 0.0F) res /= arr[count++]
-                    else return err
-                }
-            }
-        }
-        return res.toString()
-    }
-
-    //Operation string Checking Function..
-    private fun checkingOp(data: String): Boolean {
-        if (data.length >=1) {
-            val lastLetter = data[data.length - 1]
-            return !(lastLetter == '+' || lastLetter == '-'
-                    || lastLetter == '*' || lastLetter == '/' || lastLetter == '=')
-        } else return false
-    }
-
-    private fun firstLetterCheck(data: String): Boolean {
-        if( data.isNullOrEmpty()) return false
-        else if(data[0] == '+' || data[0] == '-' || data[0] == '*' || data[0] == '/') return false
-        else return true
-    }
 
     //Func. for String Concatenation...
     private fun SetText(data: String, ch: Char): String {
