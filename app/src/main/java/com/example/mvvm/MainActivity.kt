@@ -2,6 +2,7 @@ package com.example.mvvm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,119 +18,109 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         title = "CALCULATOR"
         setContentView(binding.root)
-
+        binding.inputTxt.showSoftInputOnFocus=false
 
         val viewModel=ViewModelProvider(this)[CalculatorViewModel::class.java]
 
-        //Buttons for Operations..
+        //One option is making Custom keyBoard.....
+       //The other one is presented as.....
 
-        binding.addBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            if (viewModel.firstLetterCheck(data)) {
-                if (viewModel.checkingOp(data)) {
-                    binding.resultTxt.text = SetText(data, '+')
-                } else binding.resultTxt.text = data
-            }
+        binding.addBtn.setOnClickListener {    viewModel.SetText('+')    }
+        binding.multiplyBtn.setOnClickListener {    viewModel.SetText('*')    }
+        binding.minusBtn.setOnClickListener {    viewModel.SetText('-')    }
+        binding.div.setOnClickListener {    viewModel.SetText('/')    }
+        binding.one.setOnClickListener {
+            viewModel.SetText('1')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-        binding.minusBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            if (viewModel.firstLetterCheck(data)) {
-                if (viewModel.checkingOp(data)) {
-                    binding.resultTxt.text = SetText(data, '-')
-                } else binding.resultTxt.text = data
-            }
+        binding.two.setOnClickListener {
+            viewModel.SetText('2')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-        binding.divBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            if (viewModel.firstLetterCheck(data)) {
-                if (viewModel.checkingOp(data)) {
-                    binding.resultTxt.text = SetText(data, '/')
-                } else binding.resultTxt.text = data
-            }
+        binding.three.setOnClickListener {
+            viewModel.SetText('3')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-        binding.multiplyBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            if (viewModel.firstLetterCheck(data)) {
-                if (viewModel.checkingOp(data)) {
-                    binding.resultTxt.text = SetText(data, '*')
-                } else binding.resultTxt.text = data
-            }
+        binding.four.setOnClickListener {
+            viewModel.SetText('4')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })}
+        binding.five.setOnClickListener {
+            viewModel.SetText('5')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-
-        //Buttons For Special Operations...
-        binding.equalBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            //Calculation Logic...
-            val temp = data.split("+", "-", "*", "/")
-            if(viewModel.firstLetterCheck(data)) {
-                if (temp.size > 1) {
-                    if (!(data.isNullOrEmpty()) && viewModel.checkingOp(data) == true) {
-                        binding.resultTxt.text = viewModel.calculation(data)
-                        binding.inputTxt.text = data
-                    }
-                }
-            }
+        binding.six.setOnClickListener {
+            viewModel.SetText('6')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-        binding.clearBtn.setOnClickListener {
-            binding.resultTxt.text = null
-            binding.inputTxt.text = null
+        binding.seven.setOnClickListener {
+            viewModel.SetText('7')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-
-
-        //Buttons for numbers...
-        binding.zeroBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '0')
+        binding.eight.setOnClickListener {
+            viewModel.SetText('8')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-        binding.oneBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '1')
+        binding.nine.setOnClickListener {
+            viewModel.SetText('9')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
-        binding.twoBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '2')
-        }
-        binding.threeBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '3')
-        }
-        binding.fourBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '4')
-        }
-        binding.fiveBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '5')
-        }
-        binding.sixBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '6')
-        }
-        binding.sevenBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '7')
-        }
-        binding.eightBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '8')
-        }
-        binding.nineBtn.setOnClickListener {
-            val data = binding.resultTxt.text.toString()
-            binding.resultTxt.text = SetText(data, '9')
+        binding.zero.setOnClickListener {
+            viewModel.SetText('0')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
         binding.dotBtn.setOnClickListener {
-             val data=binding.resultTxt.text.toString()
-            binding.resultTxt.setText(SetText(data,'.'))
+            viewModel.SetText('.')
+            viewModel.data.observe(this, Observer {
+                binding.inputTxt.setText(it.toString())
+            })
         }
 
+        //Special Operation...
+        binding.clear.setOnClickListener {
+            viewModel.SetText('C')
+        binding.inputTxt.setText("")
+        binding.resultTxt.setText(" ")
+        }
+
+        binding.equalBtn.setOnClickListener {
+            var data:String=" "
+            viewModel.data.observe(this, Observer { x->
+                data=x
+            })
+            val temp = data.split("+", "-", "*", "/")
+            if(viewModel.firstLetterCheck(data)){
+                if (!(data.isEmpty()) && viewModel.checkingOp(data)) {
+                    viewModel.calculation()
+                    viewModel.result.observe(this, Observer {
+                        binding.resultTxt.text = it.toString()
+                    })
+                    binding.inputTxt.setText(data.toString())
+                }
+            }
+         }
+
+
     }
 
-    //Calculations....
-
-
-    //Func. for String Concatenation...
-    private fun SetText(data: String, ch: Char): String {
-        return "$data$ch"
-    }
 
 }

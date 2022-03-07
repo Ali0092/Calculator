@@ -1,19 +1,36 @@
 package com.example.mvvm
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+class CalculatorViewModel : ViewModel() {
 
-class CalculatorViewModel(): ViewModel() {
+    private val _result = MutableLiveData<String>()
+    val result: LiveData<String>
+        get() = _result
+
+    private val _data = MutableLiveData<String>()
+    val data: LiveData<String>
+        get() = _data
+
+    var clear = "0"
+
+    init {
+        _result.value = " "
+        _data.value=" "
+    }
 
 
-     fun calculation(data: String): String {
-        val operator = data.filterNot { x -> x.isDigit() }
-        val operands = data.split("+", "-", "*", "/")
+    fun calculation() {
+
+        val operator = _data.value.toString().filterNot { x -> x.isDigit() }
+        val operands = _data.value.toString().split("+", "-", "*", "/")
         val arr = operands.map { it.toFloat() }.toTypedArray()
         var res = arr[0].toFloat()
         val err = "NotDefined"
+        var check = false
         var count = 1
+
         //Make it more efficient till 5 digits..
         for (op in operator) {
             when (op) {
@@ -22,16 +39,20 @@ class CalculatorViewModel(): ViewModel() {
                 '*' -> res *= arr[count++]
                 '/' -> {
                     if (arr[count] != 0.0F) res /= arr[count++]
-                    else return err
+                    else {
+                        check = true
+                        break
+                    }
                 }
             }
         }
-        return res.toString()
+        if (check) _result.value = err
+        else _result.value = res.toString()
     }
 
     //Operation string Checking Function..
-     fun checkingOp(data: String): Boolean {
-        if (data.length >=1) {
+    fun checkingOp(data: String): Boolean {
+        if (data.isNotEmpty()) {
             val lastLetter = data[data.length - 1]
             return !(lastLetter == '+' || lastLetter == '-'
                     || lastLetter == '*' || lastLetter == '/' || lastLetter == '=')
@@ -39,11 +60,24 @@ class CalculatorViewModel(): ViewModel() {
     }
 
      fun firstLetterCheck(data: String): Boolean {
-        if( data.isNullOrEmpty()) return false
-        else if(data[0] == '+' || data[0] == '-' || data[0] == '*' || data[0] == '/') return false
-        else return true
+        return if (data.isNullOrEmpty()) false
+        else !(data[0] == '+' || data[0] == '-' || data[0] == '*' || data[0] == '/')
     }
-    private fun SetText(data: String, ch: Char): String {
-        return "$data$ch"
+
+    fun SetText(ch: Char) {
+        if(ch!='C') {
+            if (ch == '+' || ch == '-' || ch == '/' || ch == '*') {
+                if (firstLetterCheck(_data.value.toString())) {
+                    if (checkingOp(_data.value.toString())) {
+                        _data.value = "${_data.value.toString()}$ch"
+                    }
+                }
+            } else
+                _data.value = "${_data.value.toString()}$ch"
+        }
+        else
+            _data.value=" "
+            _result.value=" "
     }
+
 }

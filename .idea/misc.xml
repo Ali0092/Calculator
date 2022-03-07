@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/ANDROID/MVVM/app/src/main/res/layout/activity_main.xml" value="0.3323076923076923" />
+        <entry key="..\:/ANDROID/calculator_MVVM/app/src/main/res/drawable/round_button.xml" value="0.2135" />
+        <entry key="..\:/ANDROID/calculator_MVVM/app/src/main/res/layout/activity_main.xml" value="0.27341772151898736" />
+        <entry key="..\:/ANDROID/calculator_MVVM/app/src/main/res/layout/key_preview.xml" value="0.27341772151898736" />
+        <entry key="..\:/ANDROID/calculator_MVVM/app/src/main/res/layout/keyboard_view.xml" value="0.27341772151898736" />
       </map>
     </option>
   </component>
